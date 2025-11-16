@@ -1,0 +1,10 @@
+admin-dashboard/
+node_modules/
+coverage/
+.git/
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+Thumbs.db

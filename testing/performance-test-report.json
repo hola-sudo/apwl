@@ -1,0 +1,329 @@
+{
+  "summary": {
+    "testDuration": "5s",
+    "endpointsTested": 7,
+    "totalErrors": 34,
+    "avgResponseTime": 0
+  },
+  "endpoints": {
+    "GET /health": {
+      "totalRequests": 10,
+      "successful": 0,
+      "failed": 10,
+      "successRate": 0,
+      "avgDuration": 0,
+      "minDuration": 0,
+      "maxDuration": 0,
+      "avgSize": 0
+    },
+    "GET /admin/dashboard": {
+      "totalRequests": 5,
+      "successful": 0,
+      "failed": 5,
+      "successRate": 0,
+      "avgDuration": 0,
+      "minDuration": 0,
+      "maxDuration": 0,
+      "avgSize": 0
+    },
+    "GET /admin/clients": {
+      "totalRequests": 5,
+      "successful": 0,
+      "failed": 5,
+      "successRate": 0,
+      "avgDuration": 0,
+      "minDuration": 0,
+      "maxDuration": 0,
+      "avgSize": 0
+    },
+    "GET /admin/agents": {
+      "totalRequests": 5,
+      "successful": 0,
+      "failed": 5,
+      "successRate": 0,
+      "avgDuration": 0,
+      "minDuration": 0,
+      "maxDuration": 0,
+      "avgSize": 0
+    },
+    "POST /admin/agents/:id/test": {
+      "totalRequests": 3,
+      "successful": 0,
+      "failed": 3,
+      "successRate": 0,
+      "avgDuration": 0,
+      "minDuration": 0,
+      "maxDuration": 0,
+      "avgSize": 0
+    },
+    "POST /agent/run": {
+      "totalRequests": 3,
+      "successful": 0,
+      "failed": 3,
+      "successRate": 0,
+      "avgDuration": 0,
+      "minDuration": 0,
+      "maxDuration": 0,
+      "avgSize": 0
+    },
+    "GET /admin/clients/:id/analytics": {
+      "totalRequests": 3,
+      "successful": 0,
+      "failed": 3,
+      "successRate": 0,
+      "avgDuration": 0,
+      "minDuration": 0,
+      "maxDuration": 0,
+      "avgSize": 0
+    }
+  },
+  "loadTests": {
+    "batch_1": {
+      "duration": 970,
+      "successful": 0,
+      "failed": 3,
+      "successRate": 0
+    },
+    "batch_2": {
+      "duration": 134,
+      "successful": 0,
+      "failed": 3,
+      "successRate": 0
+    },
+    "batch_3": {
+      "duration": 131,
+      "successful": 0,
+      "failed": 3,
+      "successRate": 0
+    },
+    "batch_4": {
+      "duration": 217,
+      "successful": 0,
+      "failed": 3,
+      "successRate": 0
+    },
+    "batch_5": {
+      "duration": 249,
+      "successful": 0,
+      "failed": 3,
+      "successRate": 0
+    }
+  },
+  "errors": [
+    {
+      "endpoint": "GET /health",
+      "iteration": 1,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.422375
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 2,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.120208
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 3,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.252208
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 4,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.107334
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 5,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.836583
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 6,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.866042
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 7,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.845667
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 8,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.897
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 9,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.587375
+    },
+    {
+      "endpoint": "GET /health",
+      "iteration": 10,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.6225
+    },
+    {
+      "endpoint": "GET /admin/dashboard",
+      "iteration": 1,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.809542
+    },
+    {
+      "endpoint": "GET /admin/dashboard",
+      "iteration": 2,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.553417
+    },
+    {
+      "endpoint": "GET /admin/dashboard",
+      "iteration": 3,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.112417
+    },
+    {
+      "endpoint": "GET /admin/dashboard",
+      "iteration": 4,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.04175
+    },
+    {
+      "endpoint": "GET /admin/dashboard",
+      "iteration": 5,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.972834
+    },
+    {
+      "endpoint": "GET /admin/clients",
+      "iteration": 1,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.717583
+    },
+    {
+      "endpoint": "GET /admin/clients",
+      "iteration": 2,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.086
+    },
+    {
+      "endpoint": "GET /admin/clients",
+      "iteration": 3,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.893625
+    },
+    {
+      "endpoint": "GET /admin/clients",
+      "iteration": 4,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.98275
+    },
+    {
+      "endpoint": "GET /admin/clients",
+      "iteration": 5,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.907417
+    },
+    {
+      "endpoint": "GET /admin/agents",
+      "iteration": 1,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 1.154167
+    },
+    {
+      "endpoint": "GET /admin/agents",
+      "iteration": 2,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.99325
+    },
+    {
+      "endpoint": "GET /admin/agents",
+      "iteration": 3,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.880834
+    },
+    {
+      "endpoint": "GET /admin/agents",
+      "iteration": 4,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.874209
+    },
+    {
+      "endpoint": "GET /admin/agents",
+      "iteration": 5,
+      "error": "Converting circular structure to JSON\n    --> starting at object with constructor 'ClientRequest'\n    |     property 'res' -> object with constructor 'IncomingMessage'\n    --- property 'req' closes the circle",
+      "duration": 0.873292
+    },
+    {
+      "endpoint": "POST /admin/agents/:id/test",
+      "iteration": 1,
+      "error": "Request failed with status code 500",
+      "duration": 307.681916
+    },
+    {
+      "endpoint": "POST /admin/agents/:id/test",
+      "iteration": 2,
+      "error": "Request failed with status code 500",
+      "duration": 111.546459
+    },
+    {
+      "endpoint": "POST /admin/agents/:id/test",
+      "iteration": 3,
+      "error": "Request failed with status code 500",
+      "duration": 154.118167
+    },
+    {
+      "endpoint": "POST /agent/run",
+      "iteration": 1,
+      "error": "Request failed with status code 500",
+      "duration": 134.15175
+    },
+    {
+      "endpoint": "POST /agent/run",
+      "iteration": 2,
+      "error": "Request failed with status code 500",
+      "duration": 243.927625
+    },
+    {
+      "endpoint": "POST /agent/run",
+      "iteration": 3,
+      "error": "Request failed with status code 500",
+      "duration": 111.332834
+    },
+    {
+      "endpoint": "GET /admin/clients/:id/analytics",
+      "iteration": 1,
+      "error": "Request failed with status code 500",
+      "duration": 12.734625
+    },
+    {
+      "endpoint": "GET /admin/clients/:id/analytics",
+      "iteration": 2,
+      "error": "Request failed with status code 500",
+      "duration": 3.218625
+    },
+    {
+      "endpoint": "GET /admin/clients/:id/analytics",
+      "iteration": 3,
+      "error": "Request failed with status code 500",
+      "duration": 5.469083
+    }
+  ],
+  "recommendations": [
+    "⚠️ GET /health has low success rate (0.0%) - investigate errors",
+    "⚠️ GET /admin/dashboard has low success rate (0.0%) - investigate errors",
+    "⚠️ GET /admin/clients has low success rate (0.0%) - investigate errors",
+    "⚠️ GET /admin/agents has low success rate (0.0%) - investigate errors",
+    "⚠️ POST /admin/agents/:id/test has low success rate (0.0%) - investigate errors",
+    "⚠️ POST /agent/run has low success rate (0.0%) - investigate errors",
+    "⚠️ GET /admin/clients/:id/analytics has low success rate (0.0%) - investigate errors",
+    "⚠️ System struggles under load (0.0% success rate) - consider scaling",
+    "⚠️ 34 errors detected - review error logs"
+  ]
+}

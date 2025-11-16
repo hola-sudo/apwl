@@ -1,0 +1,35 @@
+# Fix definitivo - Debian 11 (bullseye) con OpenSSL 1.1
+FROM node:18-bullseye
+
+WORKDIR /app
+
+# Instala deps base y OpenSSL 1.1 explícitamente
+RUN apt-get update && apt-get install -y openssl libssl1.1 ca-certificates curl && rm -rf /var/lib/apt/lists/*
+
+# Copy package files e instala dependencies
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# Copy source files
+COPY . .
+
+# Limpia y regenera Prisma para OpenSSL 1.1 (fuerza debian engine)
+RUN rm -rf node_modules/.prisma node_modules/@prisma/client || true
+RUN npm install @prisma/client
+ENV PRISMA_QUERY_ENGINE_LIBRARY=/app/node_modules/@prisma/engines/libquery_engine-debian-openssl-1.1.x.so.node
+ENV PRISMA_QUERY_ENGINE_BINARY=/app/node_modules/@prisma/engines/query-engine-debian-openssl-1.1.x
+RUN npx prisma generate
+
+# Compila TypeScript
+RUN npm run build
+
+# Puerto dinámico (clave para Railway)
+ENV PORT=3000
+EXPOSE $PORT
+
+# Health check corregido
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl --fail http://localhost:${PORT:-3000}/health || exit 1
+
+# Create database and start server
+CMD ["sh", "-c", "npx prisma db push --accept-data-loss && node dist/index.js"]

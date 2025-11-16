@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Contract Processor Cliente</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .demo-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .demo-header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .demo-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-section h2 {
+            margin-top: 0;
+            color: #334155;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .demo-examples {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            grid-column: span 2;
+            margin-top: 30px;
+        }
+
+        .example-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .example-btn {
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .example-btn:hover {
+            border-color: #667eea;
+            background: #f0f9ff;
+        }
+
+        .example-btn strong {
+            display: block;
+            color: #334155;
+            margin-bottom: 5px;
+        }
+
+        .example-btn small {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .config-section {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .config-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .config-label {
+            display: block;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 5px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status-connected {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-error {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .integration-code {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-examples {
+                grid-column: span 1;
+            }
+
+            .demo-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🤖 Contract Processor</h1>
+            <p>Demo del Cliente JavaScript Embebible</p>
+            <div>
+                <span id="connectionStatus" class="status-badge status-error">❌ Desconectado</span>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <!-- Configuración -->
+            <div class="demo-section">
+                <h2>⚙️ Configuración</h2>
+                <div class="config-section">
+                    <label class="config-label">URL del Backend:</label>
+                    <input type="text" id="apiUrl" class="config-input" value="http://localhost:3000" placeholder="https://tu-backend.railway.app">
+                    
+                    <label class="config-label">API Key:</label>
+                    <input type="text" id="apiKey" class="config-input" value="APIKEY_CLIENTE_ABC123_1704067200_ABC123" placeholder="Tu API Key">
+                    
+                    <button onclick="updateClientConfig()" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; width: 100%;">
+                        🔄 Actualizar Configuración
+                    </button>
+                </div>
+
+                <h3>📋 Integración WordPress</h3>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 15px;">
+                    Copia este código en tu página o post de WordPress:
+                </p>
+                <div class="integration-code">
+&lt;div style="max-width: 800px; margin: 20px auto;"&gt;
+    &lt;!-- Copiar contenido de agent-client.html --&gt;
+    &lt;script&gt;
+        updateConfig({
+            apiBaseUrl: '<span id="displayApiUrl">http://localhost:3000</span>',
+            apiKey: '<span id="displayApiKey">TU_API_KEY</span>',
+            compactMode: true
+        });
+    &lt;/script&gt;
+&lt;/div&gt;
+                </div>
+            </div>
+
+            <!-- Información del Sistema -->
+            <div class="demo-section">
+                <h2>📊 Estado del Sistema</h2>
+                <div style="margin-bottom: 15px;">
+                    <strong>Backend:</strong> <span id="backendStatus">Verificando...</span>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>API Key:</strong> <span id="apiKeyStatus">Verificando...</span>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Última Prueba:</strong> <span id="lastTest">Nunca</span>
+                </div>
+                
+                <button onclick="testConnection()" style="background: #16a34a; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 20px;">
+                    🔍 Probar Conexión
+                </button>
+
+                <h3 style="margin-top: 25px;">📈 Características</h3>
+                <ul style="font-size: 14px; color: #475569;">
+                    <li>✅ Autenticación automática</li>
+                    <li>✅ Polling inteligente</li>
+                    <li>✅ Manejo de errores</li>
+                    <li>✅ Copia al portapapeles</li>
+                    <li>✅ Modo compacto</li>
+                    <li>✅ 100% embebible</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Ejemplos de Texto -->
+        <div class="demo-examples">
+            <h2>💡 Ejemplos de Texto para Probar</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">
+                Haz clic en cualquier ejemplo para probarlo automáticamente en el cliente de abajo:
+            </p>
+            
+            <div class="example-buttons">
+                <div class="example-btn" onclick="loadExample('contrato_base')">
+                    <strong>📄 Contrato Base</strong>
+                    <small>Contrato de servicios profesionales básico</small>
+                </div>
+                
+                <div class="example-btn" onclick="loadExample('anexo_a')">
+                    <strong>📐 Anexo A - Diseño</strong>
+                    <small>Especificaciones de diseño y medidas</small>
+                </div>
+                
+                <div class="example-btn" onclick="loadExample('anexo_b')">
+                    <strong>📝 Anexo B - Reunión</strong>
+                    <small>Acta de reunión y acuerdos</small>
+                </div>
+                
+                <div class="example-btn" onclick="loadExample('anexo_c')">
+                    <strong>🔄 Anexo C - Cambios</strong>
+                    <small>Modificaciones y aprobaciones</small>
+                </div>
+                
+                <div class="example-btn" onclick="loadExample('anexo_d')">
+                    <strong>✅ Anexo D - Entrega</strong>
+                    <small>Entrega final y autorización de pago</small>
+                </div>
+                
+                <div class="example-btn" onclick="loadExample('complejo')">
+                    <strong>🏢 Proyecto Complejo</strong>
+                    <small>Proyecto empresarial con múltiples fases</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cliente Embebible -->
+    <div style="margin-top: 40px;">
+        <iframe src="agent-client.html" width="100%" height="700px" style="border: none; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);"></iframe>
+    </div>
+
+    <script>
+        const examples = {
+            contrato_base: `Necesito un contrato de servicios profesionales para el proyecto de diseño interior de la oficina de TechCorp. El cliente es María González, representante legal de la empresa. La fecha de inicio es el 15 de febrero de 2024 y el proyecto tiene una duración estimada de 3 meses. El presupuesto acordado es de $75,000 USD e incluye consultoría, diseño conceptual, selección de materiales, supervisión de obra y entrega final. Se requiere un anticipo del 40% para comenzar los trabajos.`,
+            
+            anexo_a: `Anexo de especificaciones técnicas para el proyecto de diseño interior. La oficina principal tiene 150 metros cuadrados distribuidos en recepción, 8 oficinas individuales, sala de reuniones y área común. Se requiere diseño de iluminación LED, selección de mobiliario ergonómico, paleta de colores corporativos (azul y gris), instalación de divisiones de cristal templado, y sistema de climatización. Se incluyen planos técnicos, renders 3D y especificaciones de materiales. Medidas exactas de cada espacio serán tomadas la primera semana.`,
+            
+            anexo_b: `Acta de reunión celebrada el 8 de febrero de 2024 entre TechCorp y el equipo de diseño. Asistentes: María González (Cliente), Carlos Mendoza (Arquitecto), Ana López (Diseñadora de interiores). Se discutió el cronograma detallado: Fase 1 - Medición y diseño conceptual (2 semanas), Fase 2 - Selección de materiales y compras (3 semanas), Fase 3 - Implementación y obra (6 semanas), Fase 4 - Acabados finales (1 semana). Se confirmó el presupuesto de $75,000 con posibilidad de ajustes menores del 10%. La entrega final queda programada para el 15 de mayo de 2024.`,
+            
+            anexo_c: `Registro de cambios aprobados durante la ejecución del proyecto. Cambio #1: Modificación en la sala de reuniones - cambio de mesa rectangular por mesa circular, incremento de $2,500. Cambio #2: Actualización del sistema de iluminación por tecnología smart, incremento de $3,800. Cambio #3: Adición de sistema de audio integrado en sala de reuniones, incremento de $1,200. Cambio #4: Cambio de pisos de vinilo por pisos de madera engineered en oficinas principales, incremento de $4,500. Presupuesto total actualizado: $87,000. Todos los cambios fueron aprobados por María González el 15 de marzo de 2024.`,
+            
+            anexo_d: `Entrega final del proyecto de diseño interior TechCorp completada el 12 de mayo de 2024. Se realizó inspección conjunta con resultados satisfactorios. Entregables completados: planos as-built, manual de mantenimiento de sistemas, garantías de mobiliario y equipos, certificados de instalaciones eléctricas, reporte fotográfico final. Cliente expresó satisfacción total con el resultado. Se autoriza el pago del saldo pendiente de $35,000 USD correspondiente al 40% final del proyecto. Período de garantía de 12 meses inicia a partir de la fecha de entrega. Proyecto oficialmente cerrado y transferido al cliente.`,
+            
+            complejo: `Proyecto integral de renovación de oficinas corporativas para empresa multinacional de tecnología. El cliente es InnovaTech Solutions, representada por el Director de Operaciones Roberto Silva. El proyecto abarca 500 metros cuadrados en dos plantas del edificio principal ubicado en zona financiera. Alcance completo incluye: demolición de espacios existentes, diseño arquitectónico completo, nuevo layout de espacios colaborativos, instalación de tecnología audiovisual avanzada, mobiliario de alta gama, iluminación inteligente, sistema de climatización independiente, y certificación LEED. Presupuesto total de $250,000 USD con cronograma de 4 meses. Fecha de inicio: 1 de marzo de 2024. Incluye 3 fases de pago: 50% anticipo, 30% al 60% de avance, 20% contraentrega. Se requiere coordinación con otros contratistas y cumplimiento de normativas corporativas estrictas.`
+        };
+
+        function loadExample(type) {
+            const iframe = document.querySelector('iframe');
+            const text = examples[type];
+            
+            // Enviar mensaje al iframe
+            iframe.contentWindow.postMessage({
+                action: 'loadText',
+                text: text
+            }, '*');
+        }
+
+        function updateClientConfig() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const apiKey = document.getElementById('apiKey').value;
+            
+            document.getElementById('displayApiUrl').textContent = apiUrl;
+            document.getElementById('displayApiKey').textContent = apiKey.substring(0, 20) + '...';
+            
+            const iframe = document.querySelector('iframe');
+            iframe.contentWindow.postMessage({
+                action: 'updateConfig',
+                config: {
+                    apiBaseUrl: apiUrl,
+                    apiKey: apiKey
+                }
+            }, '*');
+            
+            // Test connection after update
+            setTimeout(testConnection, 1000);
+        }
+
+        async function testConnection() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const apiKey = document.getElementById('apiKey').value;
+            
+            try {
+                document.getElementById('backendStatus').textContent = 'Verificando...';
+                document.getElementById('apiKeyStatus').textContent = 'Verificando...';
+                
+                // Test health endpoint
+                const healthResponse = await fetch(`${apiUrl}/health`);
+                if (healthResponse.ok) {
+                    document.getElementById('backendStatus').innerHTML = '<span style="color: #16a34a;">✅ Conectado</span>';
+                    document.getElementById('connectionStatus').className = 'status-badge status-connected';
+                    document.getElementById('connectionStatus').textContent = '✅ Conectado';
+                } else {
+                    throw new Error('Health check failed');
+                }
+                
+                // Test API key with a simple request
+                const testResponse = await fetch(`${apiUrl}/api/agent/session/1`, {
+                    headers: {
+                        'x-api-key': apiKey
+                    }
+                });
+                
+                if (testResponse.status === 401) {
+                    document.getElementById('apiKeyStatus').innerHTML = '<span style="color: #dc2626;">❌ API Key Inválida</span>';
+                } else if (testResponse.status === 404) {
+                    document.getElementById('apiKeyStatus').innerHTML = '<span style="color: #16a34a;">✅ API Key Válida</span>';
+                } else {
+                    document.getElementById('apiKeyStatus').innerHTML = '<span style="color: #16a34a;">✅ API Key Válida</span>';
+                }
+                
+                document.getElementById('lastTest').textContent = new Date().toLocaleTimeString();
+                
+            } catch (error) {
+                console.error('Connection test failed:', error);
+                document.getElementById('backendStatus').innerHTML = '<span style="color: #dc2626;">❌ Error de conexión</span>';
+                document.getElementById('apiKeyStatus').innerHTML = '<span style="color: #64748b;">⏸️ No verificada</span>';
+                document.getElementById('connectionStatus').className = 'status-badge status-error';
+                document.getElementById('connectionStatus').textContent = '❌ Error';
+                document.getElementById('lastTest').textContent = 'Error: ' + new Date().toLocaleTimeString();
+            }
+        }
+
+        // Listen for messages from iframe
+        window.addEventListener('message', function(e) {
+            if (e.data.action === 'contractProcessed') {
+                console.log('Contract processed in iframe:', e.data);
+                // Could show notification or update demo stats
+            }
+        });
+
+        // Initial connection test
+        window.addEventListener('load', function() {
+            setTimeout(testConnection, 2000);
+        });
+    </script>
+</body>
+</html>

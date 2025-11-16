@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LegalTech Platform - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Design System Foundation */
+        :root {
+            /* Color System - Exact as specified */
+            --primary-blue: #2563eb;
+            --secondary-blue: #3b82f6;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #ef4444;
+            --info-cyan: #06b6d4;
+            --ai-purple: #8b5cf6;
+            --legal-blue: #1e40af;
+            --analytics-green: #059669;
+            
+            /* Neutrals */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+            
+            /* Typography */
+            --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            
+            /* Spacing - 8px grid */
+            --space-1: 8px;
+            --space-2: 16px;
+            --space-3: 24px;
+            --space-4: 32px;
+            --space-5: 40px;
+            --space-6: 48px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            
+            /* Transitions */
+            --transition-fast: 200ms ease;
+            --transition-normal: 300ms ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-inter);
+            background: var(--gray-50);
+            color: var(--gray-900);
+            font-size: 14px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Layout Structure */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar - Fixed, elegant navigation */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: var(--space-3);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+        }
+        
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+            padding: var(--space-1) 0;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--ai-purple));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .nav-items {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 4px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all var(--transition-fast);
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(2px);
+        }
+        
+        .nav-link.active {
+            background: rgba(37, 99, 235, 0.2);
+            color: white;
+            border-left: 3px solid var(--primary-blue);
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.9;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Top Header */
+        .top-header {
+            background: white;
+            padding: var(--space-2) var(--space-4);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .header-search {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--gray-50);
+            transition: all var(--transition-fast);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+        
+        .icon-button:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+            transform: translateY(-1px);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: var(--error-red);
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .user-profile:hover {
+            background: var(--gray-50);
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--ai-purple));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+        
+        /* Content Container */
+        .content {
+            padding: var(--space-4);
+            max-width: 1600px;
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            margin-bottom: var(--space-4);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+        
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+        
+        /* Metric Cards Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+        
+        .metric-card {
+            background: white;
+            padding: var(--space-3);
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-color);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-2);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+        
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--accent-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+        }
+        
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gray-900);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .metric-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .metric-change.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-green);
+        }
+        
+        .metric-change.neutral {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--info-cyan);
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            padding: var(--space-3);
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--space-4);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: var(--space-2);
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-2);
+        }
+        
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-decoration: none;
+            color: var(--gray-900);
+        }
+        
+        .action-button:hover {
+            background: white;
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .action-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--accent-bg);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .action-label {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+        
+        /* Card Component */
+        .card {
+            background: white;
+            padding: var(--space-3);
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Recent Activity Feed */
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all var(--transition-fast);
+        }
+        
+        .activity-item:hover {
+            background: var(--gray-50);
+        }
+        
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: var(--accent-bg);
+            color: var(--accent-color);
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-description {
+            font-size: 14px;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+        
+        .activity-timestamp {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+        
+        /* System Health Panel */
+        .health-items {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .health-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            background: var(--gray-50);
+        }
+        
+        .health-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-green);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        
+        .status-dot.warning {
+            background: var(--warning-orange);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        }
+        
+        .status-dot.error {
+            background: var(--error-red);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+        
+        .health-value {
+            font-size: 13px;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+        
+        /* Top Agents Performance */
+        .agents-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .agents-table th {
+            text-align: left;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        
+        .agents-table td {
+            padding: 12px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .agents-table tr:hover {
+            background: var(--gray-50);
+        }
+        
+        .agent-name {
+            font-weight: 500;
+            color: var(--gray-900);
+        }
+        
+        .success-rate {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-green);
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .response-time {
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+        
+        .session-count {
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-900);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-badge.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-green);
+        }
+        
+        .status-badge.inactive {
+            background: rgba(156, 163, 175, 0.2);
+            color: var(--gray-600);
+        }
+        
+        /* Hidden sections for navigation */
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        /* Client Management Page */
+        .page-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-3);
+            flex-wrap: wrap;
+            gap: var(--space-2);
+        }
+        
+        .toolbar-left {
+            display: flex;
+            gap: var(--space-2);
+            align-items: center;
+        }
+        
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-2);
+        }
+        
+        .client-card {
+            background: white;
+            padding: var(--space-3);
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
+            cursor: pointer;
+        }
+        
+        .client-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-blue);
+        }
+        
+        .client-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-2);
+        }
+        
+        .client-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+        
+        .client-company {
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+        
+        .client-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: var(--space-2);
+            padding-top: var(--space-2);
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .client-detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        
+        .detail-label {
+            color: var(--gray-600);
+        }
+        
+        .detail-value {
+            color: var(--gray-900);
+            font-weight: 500;
+        }
+        
+        /* Agents Page */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-2);
+        }
+        
+        .agent-card {
+            background: white;
+            padding: var(--space-3);
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .agent-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-2);
+        }
+        
+        .agent-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+        
+        .agent-type {
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+        
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-2);
+            margin-top: var(--space-2);
+            padding-top: var(--space-2);
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .agent-stat {
+            text-align: center;
+        }
+        
+        .agent-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+        
+        .agent-stat-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-6);
+            color: var(--gray-600);
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-2);
+        }
+        
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state-description {
+            font-size: 14px;
+            margin-bottom: var(--space-3);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .main-content {
+                margin-left: 220px;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: var(--space-2);
+            }
+        }
+        
+        /* SVG Icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        
+        /* Loading State */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--gray-200);
+            border-top-color: var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: white;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast.success {
+            border-left: 4px solid var(--success-green);
+        }
+        
+        .toast.error {
+            border-left: 4px solid var(--error-red);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-icon">LT</div>
+                <span>LegalTech</span>
+            </div>
+            <nav>
+                <ul class="nav-items">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-page="dashboard">
+                            <svg class="icon nav-icon" viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="clients">
+                            <svg class="icon nav-icon" viewBox="0 0 24 24">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Gestión de Clientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="agents">
+                            <svg class="icon nav-icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.25M15.54 15.54l4.24 4.25M1 12h6M17 12h6M4.22 19.78l4.24-4.25M15.54 8.46l4.24-4.25"></path>
+                            </svg>
+                            Gestión de Agentes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="templates">
+                            <svg class="icon nav-icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            Gestión de Plantillas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="analytics">
+                            <svg class="icon nav-icon" viewBox="0 0 24 24">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            Analytics &amp; Reportes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="sessions">
+                            <svg class="icon nav-icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="2"></circle>
+                                <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                            </svg>
+                            Sesiones &amp; Monitoreo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-page="settings">
+                            <svg class="icon nav-icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.25M15.54 15.54l4.24 4.25M1 12h6M17 12h6M4.22 19.78l4.24-4.25M15.54 8.46l4.24-4.25"></path>
+                            </svg>
+                            Configuración
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-search">
+                    <input type="text" class="search-input" placeholder="Buscar clientes, agentes, plantillas...">
+                </div>
+                <div class="header-actions">
+                    <button class="icon-button" title="Notificaciones">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="icon-button" title="Ayuda">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </button>
+                    <div class="user-profile">
+                        <div class="user-avatar">AD</div>
+                        <div class="user-info">
+                            <div class="user-name">Admin User</div>
+                            <div class="user-role">Administrador</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Dashboard Page -->
+            <div class="content page-section active" id="dashboard-page">
+                <div class="page-header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Visión general de tu plataforma legal tech</p>
+                </div>
+                
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card" style="--accent-color: var(--primary-blue); --accent-bg: rgba(37, 99, 235, 0.1);">
+                        <div class="metric-header">
+                            <div>
+                                <div class="metric-label">Total Clientes</div>
+                                <div class="metric-value">24</div>
+                                <span class="metric-change positive">+3 este mes</span>
+                            </div>
+                            <div class="metric-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" style="--accent-color: var(--ai-purple); --accent-bg: rgba(139, 92, 246, 0.1);">
+                        <div class="metric-header">
+                            <div>
+                                <div class="metric-label">Agentes Activos</div>
+                                <div class="metric-value">8</div>
+                                <span class="metric-change neutral">2/10 capacidad</span>
+                            </div>
+                            <div class="metric-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.25M15.54 15.54l4.24 4.25M1 12h6M17 12h6M4.22 19.78l4.24-4.25M15.54 8.46l4.24-4.25"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" style="--accent-color: var(--info-cyan); --accent-bg: rgba(6, 182, 212, 0.1);">
+                        <div class="metric-header">
+                            <div>
+                                <div class="metric-label">Sesiones Hoy</div>
+                                <div class="metric-value">142</div>
+                                <span class="metric-change positive">+18 vs ayer</span>
+                            </div>
+                            <div class="metric-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" style="--accent-color: var(--success-green); --accent-bg: rgba(16, 185, 129, 0.1);">
+                        <div class="metric-header">
+                            <div>
+                                <div class="metric-label">Success Rate</div>
+                                <div class="metric-value">94.2%</div>
+                                <span class="metric-change positive">+2.1% mejora</span>
+                            </div>
+                            <div class="metric-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2 class="section-title">Acciones Rápidas</h2>
+                    <div class="actions-grid">
+                        <a class="action-button" style="--accent-color: var(--primary-blue); --accent-bg: rgba(37, 99, 235, 0.1);" data-action="create-client">
+                            <div class="action-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </div>
+                            <span class="action-label">Crear Nuevo Cliente</span>
+                        </a>
+                        
+                        <a class="action-button" style="--accent-color: var(--ai-purple); --accent-bg: rgba(139, 92, 246, 0.1);" data-action="configure-agent">
+                            <div class="action-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.25M15.54 15.54l4.24 4.25M1 12h6M17 12h6M4.22 19.78l4.24-4.25M15.54 8.46l4.24-4.25"></path>
+                                </svg>
+                            </div>
+                            <span class="action-label">Configurar Agente</span>
+                        </a>
+                        
+                        <a class="action-button" style="--accent-color: var(--legal-blue); --accent-bg: rgba(30, 64, 175, 0.1);" data-action="upload-template">
+                            <div class="action-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                            </div>
+                            <span class="action-label">Subir Plantilla</span>
+                        </a>
+                        
+                        <a class="action-button" style="--accent-color: var(--info-cyan); --accent-bg: rgba(6, 182, 212, 0.1);" data-action="view-sessions">
+                            <div class="action-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                    <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                                </svg>
+                            </div>
+                            <span class="action-label">Ver Sesiones Live</span>
+                        </a>
+                        
+                        <a class="action-button" style="--accent-color: var(--analytics-green); --accent-bg: rgba(5, 150, 105, 0.1);" data-action="generate-report">
+                            <div class="action-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                            </div>
+                            <span class="action-label">Generar Reporte</span>
+                        </a>
+                        
+                        <a class="action-button" style="--accent-color: var(--primary-blue); --accent-bg: rgba(37, 99, 235, 0.1);" data-action="test-agent">
+                            <div class="action-icon">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                            </div>
+                            <span class="action-label">Test Agente</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Two Column Layout -->
+                <div class="two-column">
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <h2 class="section-title">Actividad Reciente</h2>
+                        <div class="activity-feed" id="activity-feed"></div>
+                    </div>
+                    
+                    <!-- System Health -->
+                    <div class="card">
+                        <h2 class="section-title">Estado del Sistema</h2>
+                        <div class="health-items">
+                            <div class="health-item">
+                                <div class="health-name">
+                                    <span class="status-dot"></span>
+                                    API Status
+                                </div>
+                                <div class="health-value">120ms</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-name">
+                                    <span class="status-dot"></span>
+                                    Database
+                                </div>
+                                <div class="health-value">Operational</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-name">
+                                    <span class="status-dot"></span>
+                                    OpenAI Connection
+                                </div>
+                                <div class="health-value">Operational</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Top Agents Performance -->
+                <div class="card">
+                    <h2 class="section-title">Top Agentes - Performance</h2>
+                    <table class="agents-table">
+                        <thead>
+                            <tr>
+                                <th>Agente</th>
+                                <th>Success Rate</th>
+                                <th>Tiempo Promedio</th>
+                                <th>Total Sesiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="agent-name">Contract Analyzer</span></td>
+                                <td><span class="success-rate">97%</span></td>
+                                <td><span class="response-time">2.3s</span></td>
+                                <td><span class="session-count">234</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">NDA Processor</span></td>
+                                <td><span class="success-rate">95%</span></td>
+                                <td><span class="response-time">1.8s</span></td>
+                                <td><span class="session-count">189</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">IP Agreement Handler</span></td>
+                                <td><span class="success-rate">93%</span></td>
+                                <td><span class="response-time">2.1s</span></td>
+                                <td><span class="session-count">156</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="agent-name">Employment Contract Reviewer</span></td>
+                                <td><span class="success-rate">96%</span></td>
+                                <td><span class="response-time">2.5s</span></td>
+                                <td><span class="session-count">142</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Clients Page -->
+            <div class="content page-section" id="clients-page">
+                <div class="page-header">
+                    <h1 class="page-title">Gestión de Clientes</h1>
+                    <p class="page-subtitle">Administra tus clientes y sus configuraciones</p>
+                </div>
+                
+                <div class="page-toolbar">
+                    <div class="toolbar-left">
+                        <input type="text" class="search-input" placeholder="Buscar clientes..." style="width: 300px;">
+                    </div>
+                    <button class="btn btn-primary" data-action="create-client">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Crear Cliente
+                    </button>
+                </div>
+                
+                <div class="clients-grid" id="clients-grid"></div>
+            </div>
+            
+            <!-- Agents Page -->
+            <div class="content page-section" id="agents-page">
+                <div class="page-header">
+                    <h1 class="page-title">Gestión de Agentes</h1>
+                    <p class="page-subtitle">Configura y administra tus agentes de IA</p>
+                </div>
+                
+                <div class="page-toolbar">
+                    <div class="toolbar-left">
+                        <input type="text" class="search-input" placeholder="Buscar agentes..." style="width: 300px;">
+                    </div>
+                    <button class="btn btn-primary" data-action="create-agent">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Crear Agente
+                    </button>
+                </div>
+                
+                <div class="agents-grid" id="agents-grid"></div>
+            </div>
+            
+            <!-- Templates Page -->
+            <div class="content page-section" id="templates-page">
+                <div class="page-header">
+                    <h1 class="page-title">Gestión de Plantillas</h1>
+                    <p class="page-subtitle">Administra tus plantillas de documentos legales</p>
+                </div>
+                
+                <div class="page-toolbar">
+                    <div class="toolbar-left">
+                        <input type="text" class="search-input" placeholder="Buscar plantillas..." style="width: 300px;">
+                    </div>
+                    <button class="btn btn-primary" data-action="upload-template">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Subir Plantilla
+                    </button>
+                </div>
+                
+                <div class="empty-state">
+                    <div class="empty-state-icon">📄</div>
+                    <h3 class="empty-state-title">No hay plantillas disponibles</h3>
+                    <p class="empty-state-description">Comienza subiendo tu primera plantilla legal</p>
+                    <button class="btn btn-primary" data-action="upload-template">Subir Primera Plantilla</button>
+                </div>
+            </div>
+            
+            <!-- Analytics Page -->
+            <div class="content page-section" id="analytics-page">
+                <div class="page-header">
+                    <h1 class="page-title">Analytics &amp; Reportes</h1>
+                    <p class="page-subtitle">Análisis detallado de métricas y rendimiento</p>
+                </div>
+                
+                <div class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <h3 class="empty-state-title">Panel de Analytics</h3>
+                    <p class="empty-state-description">Visualiza métricas detalladas de tus agentes y clientes</p>
+                </div>
+            </div>
+            
+            <!-- Sessions Page -->
+            <div class="content page-section" id="sessions-page">
+                <div class="page-header">
+                    <h1 class="page-title">Sesiones &amp; Monitoreo</h1>
+                    <p class="page-subtitle">Monitorea sesiones en tiempo real</p>
+                </div>
+                
+                <div class="empty-state">
+                    <div class="empty-state-icon">📡</div>
+                    <h3 class="empty-state-title">Monitoreo de Sesiones</h3>
+                    <p class="empty-state-description">Visualiza y analiza las sesiones de tus agentes</p>
+                </div>
+            </div>
+            
+            <!-- Settings Page -->
+            <div class="content page-section" id="settings-page">
+                <div class="page-header">
+                    <h1 class="page-title">Configuración</h1>
+                    <p class="page-subtitle">Administra la configuración del sistema</p>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">API Keys</h2>
+                    <p style="color: var(--gray-600); margin-bottom: 16px;">Gestiona tus claves de API y credenciales</p>
+                    <button class="btn btn-secondary">Administrar Keys</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Application State Management
+        const AppState = {
+            currentPage: 'dashboard',
+            clients: [
+                { id: 1, name: 'ABC Legal Corp', company: 'ABC Law Firm', email: 'contact@abclegal.com', agents: 3, status: 'active' },
+                { id: 2, name: 'XYZ Inc', company: 'XYZ Industries', email: 'legal@xyz.com', agents: 2, status: 'active' },
+                { id: 3, name: 'Tech Ventures LLC', company: 'Tech Ventures', email: 'admin@techventures.com', agents: 5, status: 'active' },
+                { id: 4, name: 'Finance Solutions', company: 'FS Corp', email: 'ops@financesolutions.com', agents: 1, status: 'inactive' }
+            ],
+            agents: [
+                { id: 1, name: 'Contract Analyzer', type: 'Analysis', status: 'active', success_rate: '97%', sessions: 234 },
+                { id: 2, name: 'NDA Processor', type: 'Processing', status: 'active', success_rate: '95%', sessions: 189 },
+                { id: 3, name: 'IP Agreement Handler', type: 'Specialized', status: 'active', success_rate: '93%', sessions: 156 },
+                { id: 4, name: 'Employment Contract Reviewer', type: 'Analysis', status: 'inactive', success_rate: '96%', sessions: 142 }
+            ],
+            activities: [
+                { type: 'client_created', description: 'Nuevo cliente creado: ABC Legal Corp', timestamp: 'hace 2 minutos', icon: '👤', color: 'var(--primary-blue)' },
+                { type: 'agent_configured', description: 'Agente configurado: NDA Processor v2', timestamp: 'hace 15 minutos', icon: '⚙️', color: 'var(--ai-purple)' },
+                { type: 'session_completed', description: 'Sesión completada exitosamente para XYZ Inc', timestamp: 'hace 32 minutos', icon: '✓', color: 'var(--success-green)' },
+                { type: 'error', description: 'Error en procesamiento para cliente ABC', timestamp: 'hace 1 hora', icon: '⚠️', color: 'var(--error-red)' },
+                { type: 'agent_configured', description: 'Agente actualizado: Contract Analyzer', timestamp: 'hace 2 horas', icon: '⚙️', color: 'var(--ai-purple)' },
+                { type: 'session_completed', description: '10 sesiones completadas exitosamente', timestamp: 'hace 3 horas', icon: '✓', color: 'var(--success-green)' },
+                { type: 'client_created', description: 'Nuevo cliente onboarded: Tech Ventures LLC', timestamp: 'hace 5 horas', icon: '👤', color: 'var(--primary-blue)' },
+                { type: 'template_uploaded', description: 'Nueva plantilla: SaaS Terms & Conditions', timestamp: 'hace 6 horas', icon: '📄', color: 'var(--legal-blue)' }
+            ]
+        };
+        
+        // Navigation System
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pageSections = document.querySelectorAll('.page-section');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetPage = link.dataset.page;
+                    
+                    // Update nav active state
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Update page visibility
+                    pageSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    const targetSection = document.getElementById(`${targetPage}-page`);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                        AppState.currentPage = targetPage;
+                    }
+                });
+            });
+        }
+        
+        // Render Activity Feed
+        function renderActivityFeed() {
+            const feed = document.getElementById('activity-feed');
+            if (!feed) return;
+            
+            feed.innerHTML = AppState.activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: ${activity.color}15; color: ${activity.color};">
+                        ${activity.icon}
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-description">${activity.description}</div>
+                        <div class="activity-timestamp">${activity.timestamp}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Render Clients Grid
+        function renderClientsGrid() {
+            const grid = document.getElementById('clients-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = AppState.clients.map(client => `
+                <div class="client-card">
+                    <div class="client-header">
+                        <div>
+                            <div class="client-name">${client.name}</div>
+                            <div class="client-company">${client.company}</div>
+                        </div>
+                        <span class="status-badge ${client.status}">${client.status === 'active' ? 'Activo' : 'Inactivo'}</span>
+                    </div>
+                    <div class="client-details">
+                        <div class="client-detail-item">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">${client.email}</span>
+                        </div>
+                        <div class="client-detail-item">
+                            <span class="detail-label">Agentes:</span>
+                            <span class="detail-value">${client.agents} agentes</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Render Agents Grid
+        function renderAgentsGrid() {
+            const grid = document.getElementById('agents-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = AppState.agents.map(agent => `
+                <div class="agent-card">
+                    <div class="agent-card-header">
+                        <div class="agent-info">
+                            <h3>${agent.name}</h3>
+                            <div class="agent-type">${agent.type}</div>
+                        </div>
+                        <span class="status-badge ${agent.status}">${agent.status === 'active' ? 'Activo' : 'Inactivo'}</span>
+                    </div>
+                    <div class="agent-stats">
+                        <div class="agent-stat">
+                            <div class="agent-stat-value">${agent.success_rate}</div>
+                            <div class="agent-stat-label">Success Rate</div>
+                        </div>
+                        <div class="agent-stat">
+                            <div class="agent-stat-value">${agent.sessions}</div>
+                            <div class="agent-stat-label">Sesiones</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24" style="color: var(--${type === 'success' ? 'success-green' : 'error-red'});">
+                    ${type === 'success' ? '<polyline points="20 6 9 17 4 12"></polyline>' : '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>'}
+                </svg>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+        // Quick Action Handlers
+        function initQuickActions() {
+            const actionButtons = document.querySelectorAll('[data-action]');
+            
+            actionButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const action = button.dataset.action;
+                    
+                    switch(action) {
+                        case 'create-client':
+                            showToast('Función de crear cliente próximamente');
+                            break;
+                        case 'configure-agent':
+                        case 'create-agent':
+                            showToast('Función de configurar agente próximamente');
+                            break;
+                        case 'upload-template':
+                            showToast('Función de subir plantilla próximamente');
+                            break;
+                        case 'view-sessions':
+                            // Navigate to sessions page
+                            document.querySelector('[data-page="sessions"]').click();
+                            break;
+                        case 'generate-report':
+                            showToast('Generando reporte...');
+                            break;
+                        case 'test-agent':
+                            showToast('Abriendo test de agente próximamente');
+                            break;
+                    }
+                });
+            });
+        }
+        
+        // Initialize Application
+        function initApp() {
+            initNavigation();
+            renderActivityFeed();
+            renderClientsGrid();
+            renderAgentsGrid();
+            initQuickActions();
+        }
+        
+        // Start the application
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

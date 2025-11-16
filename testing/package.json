@@ -1,0 +1,16 @@
+{
+  "name": "contract-processor-testing",
+  "version": "1.0.0",
+  "description": "Comprehensive testing suite for Contract Processor platform",
+  "main": "comprehensive-test-suite.js",
+  "scripts": {
+    "test": "node comprehensive-test-suite.js",
+    "test:quick": "node quick-test.js",
+    "test:performance": "node performance-test.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.2"
+  },
+  "keywords": ["testing", "contract-processor", "multi-agent"],
+  "author": "Contract Processor Team"
+}

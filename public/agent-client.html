@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Processor - Cliente Embebible</title>
+    <style>
+        /* Estilos CSS embebidos para ser completamente autónomo */
+        .contract-processor {
+            max-width: 800px;
+            margin: 20px auto;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .cp-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .cp-header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .cp-header p {
+            margin: 8px 0 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .cp-form {
+            padding: 30px;
+        }
+
+        .cp-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .cp-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .cp-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cp-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .cp-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cp-loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            color: #667eea;
+        }
+
+        .cp-loading.active {
+            display: flex;
+        }
+
+        .cp-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .cp-status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .cp-status.processing {
+            background: #f0f9ff;
+            color: #0284c7;
+            border: 1px solid #bae6fd;
+        }
+
+        .cp-status.completed {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .cp-status.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .cp-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            display: none;
+        }
+
+        .cp-result.active {
+            display: block;
+        }
+
+        .cp-result h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            color: #334155;
+            font-size: 18px;
+        }
+
+        .cp-result-content {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cp-session-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cp-session-info span {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .cp-copy-button {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 8px 16px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cp-copy-button:hover {
+            background: #e2e8f0;
+        }
+
+        .cp-copy-button.copied {
+            background: #dcfce7;
+            color: #16a34a;
+            border-color: #bbf7d0;
+        }
+
+        /* Modo compacto para embebido */
+        .contract-processor.compact {
+            box-shadow: none;
+            border: 1px solid #e5e7eb;
+        }
+
+        .contract-processor.compact .cp-header {
+            padding: 15px;
+        }
+
+        .contract-processor.compact .cp-form {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contract-processor" id="contractProcessor">
+        <div class="cp-header">
+            <h2>🤖 Procesador de Contratos</h2>
+            <p>Genera documentos contractuales automáticamente con IA</p>
+        </div>
+        
+        <div class="cp-form">
+            <form id="contractForm">
+                <textarea 
+                    id="inputText" 
+                    class="cp-textarea" 
+                    placeholder="Describe tu contrato o anexo aquí...
+
+Ejemplos:
+• Necesito un contrato de servicios de diseño interior para Juan Pérez, fecha de inicio 15 de enero 2024, incluye decoración y medidas.
+• Reunión completada el 10 de enero. Discutimos cronograma, presupuesto final de $50,000 y entrega para marzo.
+• Se aprobaron 3 modificaciones en la sala principal y el presupuesto aumentó 15%."
+                    required
+                ></textarea>
+                
+                <button type="submit" class="cp-button" id="submitButton">
+                    📄 Generar Contrato
+                </button>
+                
+                <div class="cp-loading" id="loadingIndicator">
+                    <div class="cp-spinner"></div>
+                    <span>Procesando con IA...</span>
+                </div>
+                
+                <div class="cp-status" id="statusIndicator" style="display: none;"></div>
+            </form>
+            
+            <div class="cp-result" id="resultContainer">
+                <h3>📋 Documento Generado</h3>
+                <div class="cp-session-info">
+                    <span id="sessionInfo">Sesión: #<span id="sessionId">-</span> | Tiempo: <span id="processingTime">-</span>ms</span>
+                    <button class="cp-copy-button" id="copyButton">📋 Copiar</button>
+                </div>
+                <div class="cp-result-content" id="resultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Contract Processor Client v1.0
+         * Cliente JavaScript embebible para el sistema de procesamiento de contratos
+         * 
+         * CONFIGURACIÓN
+         */
+        const CONFIG = {
+            // URL del backend - CAMBIAR según tu deployment
+            apiBaseUrl: 'http://localhost:3000',
+            
+            // API Key del cliente - CAMBIAR por la clave real del cliente
+            apiKey: 'APIKEY_CLIENTE_ABC123_1704067200_ABC123',
+            
+            // Configuración de polling para estado de sesión
+            pollInterval: 2000, // ms
+            maxPollAttempts: 30, // máximo 60 segundos
+            
+            // Configuración visual
+            compactMode: false // true para modo embebido
+        };
+
+        /**
+         * Cliente principal del procesador de contratos
+         */
+        class ContractProcessor {
+            constructor(config) {
+                this.config = config;
+                this.currentSessionId = null;
+                this.pollAttempts = 0;
+                this.pollTimer = null;
+                
+                this.initializeElements();
+                this.bindEvents();
+                
+                if (config.compactMode) {
+                    document.getElementById('contractProcessor').classList.add('compact');
+                }
+                
+                console.log('🤖 Contract Processor Client inicializado');
+            }
+            
+            /**
+             * Inicializa referencias a elementos del DOM
+             */
+            initializeElements() {
+                this.form = document.getElementById('contractForm');
+                this.inputText = document.getElementById('inputText');
+                this.submitButton = document.getElementById('submitButton');
+                this.loadingIndicator = document.getElementById('loadingIndicator');
+                this.statusIndicator = document.getElementById('statusIndicator');
+                this.resultContainer = document.getElementById('resultContainer');
+                this.resultContent = document.getElementById('resultContent');
+                this.sessionInfo = document.getElementById('sessionInfo');
+                this.sessionId = document.getElementById('sessionId');
+                this.processingTime = document.getElementById('processingTime');
+                this.copyButton = document.getElementById('copyButton');
+            }
+            
+            /**
+             * Vincula eventos del DOM
+             */
+            bindEvents() {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+                this.copyButton.addEventListener('click', () => this.copyToClipboard());
+            }
+            
+            /**
+             * Maneja el envío del formulario
+             */
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                const inputText = this.inputText.value.trim();
+                if (!inputText) {
+                    this.showError('Por favor, ingresa el texto del contrato.');
+                    return;
+                }
+                
+                this.setLoading(true);
+                this.hideResult();
+                this.hideStatus();
+                
+                try {
+                    const result = await this.processContract(inputText);
+                    
+                    if (result.sessionId) {
+                        this.currentSessionId = result.sessionId;
+                        this.sessionId.textContent = result.sessionId;
+                        this.processingTime.textContent = result.processingTime || 'N/A';
+                        
+                        // Si el resultado ya está completo, mostrarlo
+                        if (result.message && typeof result.message === 'string') {
+                            this.showResult(result.message);
+                            this.showStatus('completed', '✅ Documento generado exitosamente');
+                        } else {
+                            // Iniciar polling para obtener el resultado
+                            this.startPolling();
+                        }
+                    } else {
+                        this.showResult(result.message || JSON.stringify(result, null, 2));
+                        this.showStatus('completed', '✅ Documento generado exitosamente');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error procesando contrato:', error);
+                    this.showError(error.message || 'Error inesperado al procesar el contrato.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+            
+            /**
+             * Llama al endpoint de procesamiento de contratos
+             */
+            async processContract(inputText) {
+                const response = await fetch(`${this.config.apiBaseUrl}/api/agent/run`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': this.config.apiKey
+                    },
+                    body: JSON.stringify({ inputText })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                return await response.json();
+            }
+            
+            /**
+             * Inicia el polling para verificar el estado de la sesión
+             */
+            startPolling() {
+                this.pollAttempts = 0;
+                this.showStatus('processing', '⏳ Procesando documento...');
+                this.poll();
+            }
+            
+            /**
+             * Verifica el estado de la sesión
+             */
+            async poll() {
+                if (this.pollAttempts >= this.config.maxPollAttempts) {
+                    this.showError('Tiempo de espera agotado. El procesamiento está tomando más tiempo del esperado.');
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`${this.config.apiBaseUrl}/api/agent/session/${this.currentSessionId}`, {
+                        method: 'GET',
+                        headers: {
+                            'x-api-key': this.config.apiKey
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const session = await response.json();
+                        
+                        if (session.status === 'completed' && session.result) {
+                            this.showResult(session.result);
+                            this.showStatus('completed', '✅ Documento generado exitosamente');
+                            return;
+                        } else if (session.status === 'failed') {
+                            throw new Error(session.error || 'Error en el procesamiento');
+                        }
+                    }
+                    
+                    // Continuar polling
+                    this.pollAttempts++;
+                    this.pollTimer = setTimeout(() => this.poll(), this.config.pollInterval);
+                    
+                } catch (error) {
+                    console.error('Error en polling:', error);
+                    this.showError(error.message || 'Error verificando el estado del procesamiento.');
+                }
+            }
+            
+            /**
+             * Muestra/oculta el indicador de carga
+             */
+            setLoading(isLoading) {
+                if (isLoading) {
+                    this.loadingIndicator.classList.add('active');
+                    this.submitButton.disabled = true;
+                    this.submitButton.textContent = '🔄 Procesando...';
+                } else {
+                    this.loadingIndicator.classList.remove('active');
+                    this.submitButton.disabled = false;
+                    this.submitButton.textContent = '📄 Generar Contrato';
+                    
+                    if (this.pollTimer) {
+                        clearTimeout(this.pollTimer);
+                        this.pollTimer = null;
+                    }
+                }
+            }
+            
+            /**
+             * Muestra el resultado del procesamiento
+             */
+            showResult(content) {
+                this.resultContent.textContent = content;
+                this.resultContainer.classList.add('active');
+                this.resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            
+            /**
+             * Oculta el contenedor de resultados
+             */
+            hideResult() {
+                this.resultContainer.classList.remove('active');
+            }
+            
+            /**
+             * Muestra un mensaje de estado
+             */
+            showStatus(type, message) {
+                this.statusIndicator.className = `cp-status ${type}`;
+                this.statusIndicator.textContent = message;
+                this.statusIndicator.style.display = 'block';
+            }
+            
+            /**
+             * Oculta el indicador de estado
+             */
+            hideStatus() {
+                this.statusIndicator.style.display = 'none';
+            }
+            
+            /**
+             * Muestra un mensaje de error
+             */
+            showError(message) {
+                this.showStatus('error', `❌ ${message}`);
+            }
+            
+            /**
+             * Copia el resultado al portapapeles
+             */
+            async copyToClipboard() {
+                try {
+                    await navigator.clipboard.writeText(this.resultContent.textContent);
+                    
+                    const originalText = this.copyButton.textContent;
+                    this.copyButton.textContent = '✅ Copiado!';
+                    this.copyButton.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        this.copyButton.textContent = originalText;
+                        this.copyButton.classList.remove('copied');
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Error copiando al portapapeles:', error);
+                    this.showError('No se pudo copiar al portapapeles.');
+                }
+            }
+        }
+
+        /**
+         * Inicialización automática cuando el DOM está listo
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crear instancia del procesador de contratos
+            window.contractProcessor = new ContractProcessor(CONFIG);
+            
+            // Función global para integración externa
+            window.processContract = function(inputText, apiKey) {
+                if (apiKey) {
+                    window.contractProcessor.config.apiKey = apiKey;
+                }
+                
+                if (inputText) {
+                    window.contractProcessor.inputText.value = inputText;
+                    window.contractProcessor.form.dispatchEvent(new Event('submit'));
+                }
+            };
+            
+            console.log('✅ Contract Processor Client listo para usar');
+        });
+
+        /**
+         * COMUNICACIÓN CON IFRAME/EMBEBIDO
+         */
+        window.addEventListener('message', function(event) {
+            if (event.data.action === 'loadText') {
+                document.getElementById('inputText').value = event.data.text;
+            } else if (event.data.action === 'updateConfig') {
+                Object.assign(CONFIG, event.data.config);
+                if (window.contractProcessor) {
+                    Object.assign(window.contractProcessor.config, event.data.config);
+                }
+            }
+        });
+
+        // Enviar eventos al padre (si está en iframe)
+        function notifyParent(eventName, data) {
+            if (window !== window.parent) {
+                window.parent.postMessage({
+                    action: eventName,
+                    data: data
+                }, '*');
+            }
+        }
+
+        /**
+         * FUNCIONES DE UTILIDAD PARA INTEGRACIÓN
+         */
+        
+        /**
+         * Función para cambiar la configuración dinámicamente
+         */
+        function updateConfig(newConfig) {
+            Object.assign(CONFIG, newConfig);
+            if (window.contractProcessor) {
+                Object.assign(window.contractProcessor.config, newConfig);
+            }
+        }
+        
+        /**
+         * Función para cambiar a modo compacto
+         */
+        function setCompactMode(isCompact) {
+            const container = document.getElementById('contractProcessor');
+            if (isCompact) {
+                container.classList.add('compact');
+            } else {
+                container.classList.remove('compact');
+            }
+            CONFIG.compactMode = isCompact;
+        }
+    </script>
+</body>
+</html>

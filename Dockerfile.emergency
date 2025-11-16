@@ -1,0 +1,29 @@
+# Emergency Dockerfile - Backend sin Prisma para resolver OpenSSL issues
+FROM node:18-bullseye
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Copy package files but exclude prisma dependencies
+COPY package.json ./
+RUN npm install express cors helmet express-rate-limit ts-node typescript @types/node @types/express
+
+# Copy source files
+COPY src/index.emergency.ts ./src/index.ts
+COPY tsconfig.json ./
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Puerto dinámico
+ENV PORT=8080
+EXPOSE $PORT
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl --fail http://localhost:${PORT:-8080}/health || exit 1
+
+# Start emergency backend (no compilation needed, direct ts-node)
+CMD ["npx", "ts-node", "src/index.ts"]

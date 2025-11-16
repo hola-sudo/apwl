@@ -1,0 +1,103 @@
+// Prisma schema file - Multi-Agent SaaS Platform
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?  @unique
+  company   String?
+  agents    Agent[]
+  contractTemplates ContractTemplate[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("clients")
+}
+
+model Agent {
+  id            String    @id @default(cuid())
+  name          String
+  description   String?
+  clientId      String    @map("client_id")
+  client        Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  apiKey        String    @unique @map("api_key")
+  
+  // Agent Configuration
+  workflow      String    @default("{}") // Workflow configuration and steps
+  prompts       String    @default("{}") // Prompts for clasificador, extractor, rellenador
+  vectorStoreId String?   @map("vector_store_id") // OpenAI Vector Store ID
+  modelSettings String    @default("{}") // Temperature, max_tokens, etc.
+  
+  // Agent Status
+  status        String    @default("active") // active, inactive, draft
+  embedUrl      String?   @map("embed_url") // Generated embed URL
+  
+  // Relationships
+  sessions      Session[]
+  
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@index([clientId])
+  @@index([apiKey])
+  @@map("agents")
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  agentId      String   @map("agent_id")
+  agent        Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  
+  // Session Data
+  inputText    String   @map("input_text")
+  agentOutput  String?  @map("agent_output")
+  
+  // Session Status
+  status       String   @default("pending") // pending, processing, completed, failed
+  errorMessage String?  @map("error_message")
+  
+  // Processing Metrics
+  processingTime Int?   @map("processing_time") // milliseconds
+  tokensUsed     Int?   @map("tokens_used")
+  
+  // Metadata
+  clientIp       String? @map("client_ip")
+  userAgent      String? @map("user_agent")
+  referrer       String? @map("referrer")
+  
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([agentId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("sessions")
+}
+
+model ContractTemplate {
+  id             String   @id @default(cuid())
+  clientId       String   @map("client_id")
+  templateType   String   @map("template_type") // 'contrato_base', 'anexo_a', 'anexo_b', 'anexo_c', 'anexo_d'
+  fileName       String   @map("file_name")
+  content        String
+  fileUrl        String?  @map("file_url")
+  isActive       Boolean  @default(true) @map("is_active")
+  placeholders   String   @default("")
+  uploadedBy     String?  @map("uploaded_by")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  client         Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@unique([clientId, templateType])
+  @@index([clientId])
+  @@index([templateType])
+  @@map("contract_templates")
+}

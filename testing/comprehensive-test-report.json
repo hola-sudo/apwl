@@ -1,0 +1,38 @@
+{
+  "summary": {
+    "duration": "0s",
+    "clients": 0,
+    "agents": 0,
+    "sessions": 0,
+    "errors": 3
+  },
+  "timings": {
+    "POST /admin/clients": 2,
+    "GET /admin/dashboard": 5,
+    "GET /admin/agents/sessions": 1
+  },
+  "errors": [
+    {
+      "endpoint": "POST /admin/clients",
+      "error": "Request failed with status code 409",
+      "duration": 46
+    },
+    {
+      "endpoint": "POST /admin/clients",
+      "error": "Request failed with status code 409",
+      "duration": 3
+    },
+    {
+      "endpoint": "POST /admin/clients",
+      "error": "Request failed with status code 409",
+      "duration": 2
+    }
+  ],
+  "csvExport": {
+    "path": "/Users/pablom/Documents/APWL/testing/test-sessions-export.csv",
+    "rows": 1,
+    "size": 69
+  },
+  "clients": [],
+  "agents": []
+}

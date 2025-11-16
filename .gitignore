@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.railway
+.env.production
+
+# Build outputs
+dist/
+build/
+*.log
+logs/
+*.map
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Database
+*.db
+*.db-journal
+prisma/dev.db*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.tar.gz
+
+# Deployment files
+frontend-deployment.tar.gz
+*.deploy
+
+# Config files with sensitive data
+config/api_keys.json
+
