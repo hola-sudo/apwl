@@ -19,7 +19,7 @@ export const useAuth = () => {
   const validateApiKey = async (key: string) => {
     try {
       setIsLoading(true);
-      await apiClient.get('/admin/health', {
+      await apiClient.get('/api/admin/health', {
         headers: { 'x-api-key': key }
       });
       setIsAuthenticated(true);
