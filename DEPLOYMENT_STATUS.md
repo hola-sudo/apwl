@@ -1,18 +1,30 @@
 # APWL Deployment Status
 
-**Last Updated**: [Date]
+**Last Updated**: November 16, 2025
 **Deployment Phase**: Phase 3.1 & 3.2
+**Railway Project ID**: `4be8a337-39f8-4ebe-abef-44265fa0395f`
+**Railway Dashboard**: https://railway.app/project/4be8a337-39f8-4ebe-abef-44265fa0395f
 
 ## 🚀 Deployment URLs
 
 ### Backend
 - **Production URL**: `[TO BE FILLED AFTER DEPLOYMENT]`
 - **Health Check**: `[BACKEND_URL]/health`
-- **Status**: ⏳ Pending Deployment
+- **Status**: ⏳ Pending Service Creation
 
 ### Frontend
 - **Production URL**: `[TO BE FILLED AFTER DEPLOYMENT]`
-- **Status**: ⏳ Pending Deployment
+- **Status**: ⏳ Pending Service Creation
+
+## 📋 Current Progress
+
+✅ Railway project "apwl" created (ID: 4be8a337-39f8-4ebe-abef-44265fa0395f)
+✅ Railway CLI authenticated  
+⏳ PostgreSQL database - **Needs to be created via Railway Dashboard**
+⏳ Backend service - **Needs to be created via Railway Dashboard**  
+⏳ Frontend service - **Needs to be created via Railway Dashboard**
+
+**Next Steps**: Follow `RAILWAY_SETUP_INSTRUCTIONS.md` to create services via Railway Dashboard
 
 ## 📋 Environment Variables
 
