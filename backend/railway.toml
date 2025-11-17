@@ -1,5 +1,9 @@
 [build]
-command = "npm run build"
+builder = "nixpacks"
+buildCommand = "npm run build"
 
 [deploy]
 startCommand = "npm run start"
+
+[nixpacks]
+app = "backend"
