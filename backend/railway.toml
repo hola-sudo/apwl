@@ -2,4 +2,4 @@
 command = "npm run build"
 
 [deploy]
-startCommand = "npx serve dist -s"
+startCommand = "npm run start"
